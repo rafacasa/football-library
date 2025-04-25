@@ -1,0 +1,32 @@
+[project]
+name = "football-library"
+version = "0.1.0"
+description = "Django powered website to register information about american football matches"
+authors = [
+    {name = "Rafael Luiz Casa",email = "rafael.casa@pm.me"}
+]
+readme = "README.md"
+requires-python = "^3.10"
+dependencies = [
+    "django (>=5.2,<6.0)",
+    "django-environ (>=0.12.0,<0.13.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^4.2.0"
+
+[tool.black]
+line-length = 88
+target-version = ['py313']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "django"
+combine_as_imports = true
+include_trailing_comma = true
+line_length = 88
