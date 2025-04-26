@@ -9,6 +9,7 @@ on:
 jobs:
   test-django:
     runs-on: ubuntu-latest
+    environment: test-django
     steps:
       - uses: actions/checkout@v4
       
@@ -61,7 +62,17 @@ jobs:
       - name: Install dependencies
         if: steps.cached-venv.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --no-root
-      
+
+      # Create .env file from secrets
+      - name: 'Create env file'
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envkey_DEBUG: true
+          envkey_SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          env_key_TIMEZONE: "America/Sao_Paulo"
+          env_key_LANGUAGE_CODE: "pt-BR"
+          directory: "src"
+          
       # The actual tests to run
       - name: Run Tests
         working-directory: ./src
