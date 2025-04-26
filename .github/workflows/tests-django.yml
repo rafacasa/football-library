@@ -68,8 +68,8 @@ jobs:
         with:
           envkey_DEBUG: true
           envkey_SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          env_key_TIMEZONE: "America/Sao_Paulo"
-          env_key_LANGUAGE_CODE: "pt-BR"
+          envkey_TIMEZONE: "America/Sao_Paulo"
+          envkey_LANGUAGE_CODE: "pt-BR"
           directory: "src"
           
       # The actual tests to run
