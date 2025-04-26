@@ -9,7 +9,6 @@ on:
 jobs:
   test-django:
     runs-on: ubuntu-latest
-    environment: test-django
     steps:
       - uses: actions/checkout@v4
       
