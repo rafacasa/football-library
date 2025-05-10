@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <ul>
+        {% for game in games %}
+            <li>
+                <a href="{% url "football:update-game" game.pk %}">
+                    {{ game.home_team.team_name }} vs {{ game.away_team.team_name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock content %}

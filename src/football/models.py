@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 
 
@@ -56,6 +57,7 @@ class Game(models.Model):
         help_text="Select the home Team:",  # TODO Translations
         related_name="home_game_set",
     )
+    home_team_score = models.PositiveIntegerField(blank=True, default=0)
     away_team = models.ForeignKey(
         Team,
         on_delete=models.PROTECT,
@@ -63,6 +65,7 @@ class Game(models.Model):
         help_text="Select the away Team:",  # TODO Translations
         related_name="away_game_set",
     )
+    away_team_score = models.PositiveIntegerField(blank=True, default=0)
     date = models.DateTimeField(
         verbose_name="game time",
         help_text="Select the game time:",  # TODO Translations
@@ -93,6 +96,9 @@ class Game(models.Model):
     def is_past_game(self):
         diff = timezone.now() - self.date
         return diff >= timezone.timedelta(seconds=1)
+
+    def get_absolute_url(self):
+        return reverse("football:view-game", kwargs={"pk": self.pk})
 
     def __str__(self):
         return f"{self.home_team} vs {self.away_team}"
