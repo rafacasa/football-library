@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       # Get python version to use from .python_version file
       # Pyhton version is saved on python_version env variable
       - name: Get python version
@@ -38,16 +38,16 @@ jobs:
           version: 2.1.2
           virtualenvs-create: true
           virtualenvs-in-project: true
-      
+
       # If using the cached instalation, the configs above are not applied
       - name: Configure poetry
         if: steps.cached-poetry.outputs.cache-hit == 'true'
         run: |
           poetry config virtualenvs.create true
           poetry config virtualenvs.in-project true
-          
+
       # Caching the virtual env with all the installed dependencies
-      # The cache key will auto change if the poetry.lock file or 
+      # The cache key will auto change if the poetry.lock file or
       # python version changes
       - name: cache venv
         id: cached-venv
@@ -55,7 +55,7 @@ jobs:
         with:
           path: .venv
           key: venv-${{ env.python_version }}-${{ hashFiles('**/poetry.lock') }}
-          
+
       # Installing dependencies. --no-root means to install the dependencies
       # but not the project itself
       - name: Install dependencies
@@ -71,7 +71,7 @@ jobs:
           envkey_TIMEZONE: "America/Sao_Paulo"
           envkey_LANGUAGE_CODE: "pt-BR"
           directory: "src"
-          
+
       # The actual tests to run
       - name: Run Tests
         working-directory: ./src
