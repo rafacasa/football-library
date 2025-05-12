@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
     <h3> {{ game.home_team.team_name }} vs {{ game.away_team.team_name }} </h3>
     <form method="post">{% csrf_token %}
-        {{ form.as_p }}
-        {{ formset.as_table }}
+        {{ form|crispy }}
+        {{ formset|crispy }}
         <input type="submit" value="Update">
     </form>
 {% endblock content %}

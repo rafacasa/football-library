@@ -1,4 +1,5 @@
 from django.core.exceptions import ImproperlyConfigured
+from django.shortcuts import get_object_or_404
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
@@ -68,3 +69,14 @@ class GameUpdateView(UpdateView):
             return self.form_valid(form, formset)
         else:
             return self.form_invalid(form, formset)
+
+
+def add_foul_on_formset(request, pk):
+    game = get_object_or_404(Game, pk=pk)
+    form = GameForm(request.POST, instance=game)
+    formset = GameFoulFormSet(request.POST, instance=game)
+    if form.is_valid() and formset.is_valid():
+        form.save()
+        formset.save()
+        # formset2 = GameFoulFormSet(instance=game)
+        # return render parcial do form e formset2
