@@ -4,9 +4,10 @@
 
 {% block content %}
     <h3> {{ game.home_team.team_name }} vs {{ game.away_team.team_name }} </h3>
-    <form method="post">{% csrf_token %}
-        {{ form|crispy }}
-        {{ formset|crispy }}
-        <input type="submit" value="Update">
+    <form method="post" class="form-horizontal">
+        {% crispy form %}
+        <div class="col-lg-8">
+            {% crispy formset formset_helper %}
+        </div>
     </form>
 {% endblock content %}

@@ -4,7 +4,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 
-from .forms import GameForm, GameFoulFormSet
+from .forms import GameForm, GameFoulFormSet, GameFoulFormSetHelper
 from .models import Game, Game_Foul
 
 
@@ -31,6 +31,7 @@ class GameUpdateView(UpdateView):
     template_name = "football/game_update.html"
     form_class = GameForm
     formset_class = GameFoulFormSet
+    formset_helper_class = GameFoulFormSetHelper
 
     def get_formset_class(self):
         if self.formset_class:
@@ -49,6 +50,7 @@ class GameUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         if "formset" not in context:
             context["formset"] = self.get_formset()
+            context["formset_helper"] = GameFoulFormSetHelper()
         return context
 
     def form_valid(self, form, formset):
