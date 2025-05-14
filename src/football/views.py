@@ -1,5 +1,5 @@
 from django.core.exceptions import ImproperlyConfigured
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
@@ -50,7 +50,7 @@ class GameUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         if "formset" not in context:
             context["formset"] = self.get_formset()
-            context["formset_helper"] = GameFoulFormSetHelper()
+        context["formset_helper"] = GameFoulFormSetHelper()
         return context
 
     def form_valid(self, form, formset):
@@ -73,12 +73,27 @@ class GameUpdateView(UpdateView):
             return self.form_invalid(form, formset)
 
 
-def add_foul_on_formset(request, pk):
+def GameUpdateFoulInformation(request, pk):
     game = get_object_or_404(Game, pk=pk)
-    form = GameForm(request.POST, instance=game)
-    formset = GameFoulFormSet(request.POST, instance=game)
-    if form.is_valid() and formset.is_valid():
-        form.save()
-        formset.save()
-        # formset2 = GameFoulFormSet(instance=game)
-        # return render parcial do form e formset2
+
+    if request.method == "POST":
+        form = GameForm(request.POST, instance=game)
+        formset = GameFoulFormSet(request.POST, instance=game)
+
+        if form.is_valid() and formset.is_valid():
+            # TODO save all information on a transaction
+            form.save()
+            formset.save()
+            return redirect("football:view-game", pk=pk)
+    else:
+        form = GameForm(instance=game)
+        formset = GameFoulFormSet(instance=game)
+
+    context = {
+        "form": form,
+        "game": game,
+        "formset": formset,
+        "formset_helper": GameFoulFormSetHelper(),
+    }
+
+    return render(request, "football/game_update.html", context)

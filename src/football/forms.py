@@ -1,5 +1,6 @@
+from crispy_forms.bootstrap import StrictButton
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
+from crispy_forms.layout import Div, Layout, Row
 from django.forms import ModelForm, inlineformset_factory
 
 from .models import Game, Game_Foul
@@ -11,8 +12,20 @@ class GameForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.form_class = "form-horizontal"
-        self.helper.label_class = "col-lg-2"
-        self.helper.field_class = "col-lg-6"
+        self.helper.label_class = "col-lg-3"
+        self.helper.field_class = "col-lg-9"
+        self.helper.layout = Layout(
+            Row(
+                Div("home_team_score", css_class="col"),
+                Div("away_team_score", css_class="col"),
+            ),
+            Row(
+                Div("video_link", css_class="col"),
+            ),
+        )
+        if self.instance is not None:
+            self.fields["home_team_score"].label = f"Placar {self.instance.home_team}"
+            self.fields["away_team_score"].label = f"Placar {self.instance.away_team}"
 
     class Meta:
         model = Game
@@ -32,6 +45,21 @@ class GameFoulFormSetHelper(FormHelper):
         super().__init__(*args, **kwargs)
         self.form_tag = False
         self.disable_csrf = True
-        self.add_input(Submit("submit", "Update"))
-        self.template = "bootstrap5/table_inline_formset.html"
-        # self.field_class = "col-lg-3"
+        self.form_class = "form-horizontal"
+        self.label_class = "col-lg-2"
+        self.field_class = "col-lg-10"
+        self.layout = Layout(
+            Div(
+                Div("foul", css_class="col"),
+                Div("period", css_class="col"),
+                Div(
+                    StrictButton(
+                        '<i class="bi bi-trash"></i>',
+                        "Del",
+                        css_class="btn btn-outline-danger",
+                    ),
+                    css_class="col-1",
+                ),
+                css_class="row",
+            )
+        )

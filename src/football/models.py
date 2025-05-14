@@ -73,7 +73,7 @@ class Game(models.Model):
     )
     video_link = models.URLField(
         verbose_name="link to game's videos",
-        help_text="Enter the link for the game's video:",  # TODO Translations
+        # help_text="Enter the link for the game's video:",  # TODO Translations
         blank=True,
     )
     league = models.ForeignKey(
@@ -140,20 +140,20 @@ class Game_Foul(models.Model):
         Game,
         on_delete=models.PROTECT,
         verbose_name="game",
-        help_text="Enter the game where the foul happend:",  # TODO Translations
+        # help_text="Enter the game where the foul happend:",  # TODO Translations
     )
     foul = models.ForeignKey(
         Foul,
         on_delete=models.PROTECT,
         verbose_name="foul",
-        help_text="Enter the foul:",  # TODO Translations
+        # help_text="Enter the foul:",  # TODO Translations
     )
     period = models.CharField(
         max_length=5,
         choices=Period,
         default=Period.QTR1,
         verbose_name="period",
-        help_text="Enter the period when the foul happend:",  # TODO Translations
+        # help_text="Enter the period when the foul happend:",  # TODO Translations
     )
 
     class Meta:
