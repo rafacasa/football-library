@@ -1,6 +1,5 @@
-from crispy_forms.bootstrap import StrictButton
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Div, Layout, Row
+from crispy_forms.layout import HTML, Div, Layout, Row
 from django.forms import ModelForm, inlineformset_factory
 
 from .models import Game, Game_Foul
@@ -53,12 +52,17 @@ class GameFoulFormSetHelper(FormHelper):
                 Div("foul", css_class="col"),
                 Div("period", css_class="col"),
                 Div(
-                    StrictButton(
-                        '<i class="bi bi-trash"></i>',
-                        "Del",
-                        css_class="btn btn-outline-danger",
+                    HTML(
+                        '<button class="btn btn-outline-danger" id="id_button_'
+                        'delete_set-{{forloop.counter|add:"-1" }}"><i class="bi '
+                        'bi-trash"></i></button>'
                     ),
-                    css_class="col-1",
+                    # StrictButton(
+                    #     '<i class="bi bi-trash"></i>',
+                    #     "id_button_delete_set-{{forloop.counter}}",
+                    #     css_class="btn btn-outline-danger",
+                    # ),
+                    css_class="col-auto text-end",
                 ),
                 css_class="row",
             )
