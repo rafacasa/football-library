@@ -3,6 +3,8 @@
 {% load crispy_forms_tags %}
 {% load static %}
 
+{% block title %}Game: {{ game.home_team.team_name }} vs {{ game.away_team.team_name }}{% endblock title %}
+
 {% block content %}
     <div class="row">
         <div class="col">
@@ -25,6 +27,10 @@
             <div class="wrapper">
                 {% crispy formset.empty_form formset_helper %}
             </div>
+        </template>
+
+        <template id="id_formset_delete_input_template">
+            <div class="wrapper"><input type="hidden" name="game_foul_set-__prefix__-DELETE" value="on" id="id_game_foul_set-__prefix__-DELETE"></div>
         </template>
 
         <hr class="border border-2 border-black opacity-25">

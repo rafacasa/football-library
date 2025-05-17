@@ -1,0 +1,14 @@
+{% comment %} <pre>  {% debug %}  </pre>
+
+<pre>  {{ field.name }}  </pre>
+<pre>  {{ field.html_name }}  </pre>
+<pre>  {{ field.html_initial_id }}  </pre>
+<pre>  {{ field.html_initial_name }}  </pre>
+<pre>  {{ field.data }}  </pre>
+<pre>  {{ field.form.prefix }}  </pre>
+<pre>  {{ field.form.auto_id }}  </pre>
+<pre>  {{ form.auto_id }}  </pre>
+<pre>  {{ formset_form.auto_id }}  </pre> {% endcomment %}
+
+
+<button class="btn btn-outline-danger" id="{{ field.html_name }}" type="button" onclick="deleteFoul('{{field.form.prefix}}-btn')"><i class="bi bi-trash"></i></button>

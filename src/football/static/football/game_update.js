@@ -2,12 +2,10 @@ window.addEventListener('load', (event) => {
     // get form template and total number of forms from management form
     const templateForm = document.getElementById('id_formset_empty_form');
     const inputTotalForms = document.querySelector('input[id$="-TOTAL_FORMS"]');
-    const inputInitialForms = document.querySelector('input[id$="-INITIAL_FORMS"]');
 
     // get our container (e.g. <table>, <ul>, or <div>) and "Add" button
     const containerFormSet = document.getElementById('id_formset_container');
     const buttonAdd = document.getElementById('id_formset_add_button');
-    const buttonSubmit = document.getElementById('id_formset_submit_button');
 
     // event handlers
     buttonAdd.onclick = addForm;
@@ -28,11 +26,30 @@ window.addEventListener('load', (event) => {
             element.innerHTML = element.innerHTML.replace(
             /(?<=\w+-)(__prefix__|\d+)(?=-\w+)/g,
             new_index.toString());
-
-            console.log(element)
         }
         containerFormSet.appendChild(formFragment);
         inputTotalForms.value = new_index + 1;
-        // TENTAR AJUSTAR O ID DO BOTAO DE DELETE
     }
+
+
 }, false);
+
+function deleteFoul(id_text) {
+    var id_form = id_text.split("-")[1];
+    console.log(id_form);
+
+    template = document.getElementById('id_formset_delete_input_template');
+    deleteFragment = template.content.cloneNode(true);
+
+    for (let element of deleteFragment.children) {
+        console.log(element.innerHTML);
+        element.innerHTML = element.innerHTML.replace(
+            /(?<=\w+-)(__prefix__|\d+)(?=-\w+)/g,
+            id_form.toString());
+        console.log(element);
+    }
+    var teste = document.getElementById(`div_id_game_foul_set-${id_form}-foul`)
+    var linha = teste.parentElement.parentElement
+    linha.appendChild(deleteFragment);
+    linha.hidden = true;
+}

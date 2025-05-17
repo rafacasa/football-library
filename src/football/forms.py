@@ -1,6 +1,6 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import HTML, Div, Layout, Row
-from django.forms import ModelForm, inlineformset_factory
+from crispy_forms.layout import Div, Field, Layout, Row
+from django.forms import BooleanField, ModelForm, inlineformset_factory
 
 from .models import Game, Game_Foul
 
@@ -23,19 +23,27 @@ class GameForm(ModelForm):
             ),
         )
         if self.instance is not None:
-            self.fields["home_team_score"].label = f"Placar {self.instance.home_team}"
-            self.fields["away_team_score"].label = f"Placar {self.instance.away_team}"
+            self.fields["home_team_score"].label = f"{self.instance.home_team}'s score"
+            self.fields["away_team_score"].label = f"{self.instance.away_team}'s score"
 
     class Meta:
         model = Game
         fields = ["home_team_score", "away_team_score", "video_link"]
 
 
+class GameFoulForm(ModelForm):
+    delete_btn = BooleanField(required=False)
+
+    class Meta:
+        model = Game_Foul
+        fields = ["foul", "period"]
+
+
 GameFoulFormSet = inlineformset_factory(
     Game,
     Game_Foul,
-    fields=["foul", "period"],
     extra=1,
+    form=GameFoulForm,
 )
 
 
@@ -52,16 +60,9 @@ class GameFoulFormSetHelper(FormHelper):
                 Div("foul", css_class="col"),
                 Div("period", css_class="col"),
                 Div(
-                    HTML(
-                        '<button class="btn btn-outline-danger" id="id_button_'
-                        'delete_set-{{forloop.counter|add:"-1" }}"><i class="bi '
-                        'bi-trash"></i></button>'
+                    Field(
+                        "delete_btn", template="football/delete_button_template.html"
                     ),
-                    # StrictButton(
-                    #     '<i class="bi bi-trash"></i>',
-                    #     "id_button_delete_set-{{forloop.counter}}",
-                    #     css_class="btn btn-outline-danger",
-                    # ),
                     css_class="col-auto text-end",
                 ),
                 css_class="row",
