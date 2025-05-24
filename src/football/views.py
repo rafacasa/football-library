@@ -14,7 +14,7 @@ class GameListView(ListView):
 
 class GameLeagueListView(GameListView):
     def get_queryset(self):
-        self.league = get_object_or_404(League, pk=self.kwargs["league_pk"])
+        self.league = get_object_or_404(League, slug=self.kwargs["league_slug"])
         return Game.objects.filter(league=self.league)
 
 

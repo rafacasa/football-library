@@ -24,7 +24,7 @@ window.addEventListener('load', (event) => {
             // replace the __prefix__ placeholders from the empty form by the
             // actual form index
             element.innerHTML = element.innerHTML.replace(
-            /(?<=\w+-)(__prefix__|\d+)(?=-\w+)/g,
+            /(?<=\w+-)(__prefix__)(?=-\w+)/g,
             new_index.toString());
         }
         containerFormSet.appendChild(formFragment);
@@ -44,7 +44,7 @@ function deleteFoul(id_text) {
     for (let element of deleteFragment.children) {
         console.log(element.innerHTML);
         element.innerHTML = element.innerHTML.replace(
-            /(?<=\w+-)(__prefix__|\d+)(?=-\w+)/g,
+            /(?<=\w+-)(__prefix__)(?=-\w+)/g,
             id_form.toString());
         console.log(element);
     }

@@ -1,86 +1,104 @@
+import uuid
+
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.text import slugify
+from django.utils.translation import gettext_lazy as _
 
 
-# Create your models here.
 class Team(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     team_name = models.CharField(
         max_length=100,
-        verbose_name="team name",
-        help_text="Enter the Team name:",  # TODO Translations
+        verbose_name=_("team name"),
     )
 
     def __str__(self):
         return self.team_name
 
     class Meta:
-        verbose_name = "team"  # TODO Translations
-        verbose_name_plural = "teams"  # TODO Translations
+        verbose_name = _("team")
+        verbose_name_plural = _("teams")
 
 
 class League(models.Model):
+    slug = models.SlugField(blank=True, unique=True)
     name = models.CharField(
         max_length=100,
-        verbose_name="league name",
-        help_text="Enter the League name:",  # TODO Translations
+        verbose_name=_("league name"),
     )
 
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        return super().save(*args, **kwargs)
+
     class Meta:
-        verbose_name = "league"  # TODO Translations
-        verbose_name_plural = "leagues"  # TODO Translations
+        verbose_name = _("league")
+        verbose_name_plural = _("leagues")
 
 
 class Season(models.Model):
+    slug = models.SlugField(blank=True, unique=True)
     season_name = models.CharField(
         max_length=50,
-        verbose_name="season name",  # TODO Translations
-        help_text="Enter the Season name: ",  # TODO Translations
+        verbose_name=_("season name"),
     )
 
     def __str__(self):
         return self.season_name
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.season_name)
+        return super().save(*args, **kwargs)
+
     class Meta:
-        verbose_name = "season"  # TODO Translations
-        verbose_name_plural = "seasons"  # TODO Translations
+        verbose_name = _("season")
+        verbose_name_plural = _("seasons")
 
 
 class Game(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     home_team = models.ForeignKey(
         Team,
         on_delete=models.PROTECT,
-        verbose_name="home team",
-        help_text="Select the home Team:",  # TODO Translations
+        verbose_name=_("home team"),
         related_name="home_game_set",
     )
-    home_team_score = models.PositiveIntegerField(blank=True, default=0)
+    home_team_score = models.PositiveIntegerField(
+        blank=True,
+        default=0,
+        verbose_name=_("home team score"),
+    )
     away_team = models.ForeignKey(
         Team,
         on_delete=models.PROTECT,
-        verbose_name="away team",
-        help_text="Select the away Team:",  # TODO Translations
+        verbose_name=_("away team"),
         related_name="away_game_set",
     )
-    away_team_score = models.PositiveIntegerField(blank=True, default=0)
-    date = models.DateTimeField(
-        verbose_name="game time",
-        help_text="Select the game time:",  # TODO Translations
+    away_team_score = models.PositiveIntegerField(
         blank=True,
+        default=0,
+        verbose_name=_("away team score"),
+    )
+    date = models.DateTimeField(
+        verbose_name=_("game time"),
+        blank=True,
+        null=True,
     )
     video_link = models.URLField(
-        verbose_name="link to game's videos",
-        # help_text="Enter the link for the game's video:",  # TODO Translations
+        verbose_name=_("link to game's videos"),
         blank=True,
     )
     league = models.ForeignKey(
         League,
         on_delete=models.PROTECT,
-        verbose_name="league",
-        help_text="Enter this game's league:",  # TODO Translations
+        verbose_name=_("league"),
     )
     fouls_in_game = models.ManyToManyField(
         "Foul",
@@ -89,8 +107,7 @@ class Game(models.Model):
     season = models.ForeignKey(
         Season,
         on_delete=models.PROTECT,
-        verbose_name="season",  # TODO Translations
-        help_text="Select the game season",  # TODO Translations
+        verbose_name=_("season"),
     )
 
     def is_past_game(self):
@@ -104,58 +121,53 @@ class Game(models.Model):
         return f"{self.home_team} vs {self.away_team}"
 
     class Meta:
-        verbose_name = "game"  # TODO Translations
-        verbose_name_plural = "games"  # TODO Translations
+        verbose_name = _("game")
+        verbose_name_plural = _("games")
 
 
 class Foul(models.Model):
     name = models.CharField(
         max_length=100,
-        verbose_name="foul name",
-        help_text="Enter the Foul name:",
-    )  # TODO Translations
+        verbose_name=_("foul name"),
+    )
     short_name = models.CharField(
         max_length=5,
-        verbose_name="foul short name",
-        help_text="Enter the Foul short name:",
-    )  # TODO Translations
+        verbose_name=_("foul short name"),
+    )
 
     def __str__(self):
         return self.short_name
 
     class Meta:
-        verbose_name = "foul"  # TODO Translations
-        verbose_name_plural = "fouls"  # TODO Translations
+        verbose_name = _("foul")
+        verbose_name_plural = _("fouls")
 
 
 class Game_Foul(models.Model):
     class Period(models.TextChoices):
-        QTR1 = "1 QTR", "First Quarter"
-        QTR2 = "2 QTR", "Second Quarter"
-        QTR3 = "3 QTR", "Third Quarter"
-        QTR4 = "4 QTR", "Fourth Quarter"
-        OT = "OT", "Overtime"  # TODO Translations
+        QTR1 = "1 QTR", _("First Quarter")
+        QTR2 = "2 QTR", _("Second Quarter")
+        QTR3 = "3 QTR", _("Third Quarter")
+        QTR4 = "4 QTR", _("Fourth Quarter")
+        OT = "OT", _("Overtime")
 
     game = models.ForeignKey(
         Game,
         on_delete=models.PROTECT,
-        verbose_name="game",
-        # help_text="Enter the game where the foul happend:",  # TODO Translations
+        verbose_name=_("game"),
     )
     foul = models.ForeignKey(
         Foul,
         on_delete=models.PROTECT,
-        verbose_name="foul",
-        # help_text="Enter the foul:",  # TODO Translations
+        verbose_name=_("foul"),
     )
     period = models.CharField(
         max_length=5,
         choices=Period,
         default=Period.QTR1,
-        verbose_name="period",
-        # help_text="Enter the period when the foul happend:",  # TODO Translations
+        verbose_name=_("period"),
     )
 
     class Meta:
-        verbose_name = "game foul"  # TODO Translations
-        verbose_name_plural = "game fouls"  # TODO Translations
+        verbose_name = _("game foul")
+        verbose_name_plural = _("game fouls")

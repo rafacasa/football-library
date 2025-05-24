@@ -7,10 +7,10 @@ urlpatterns = [
     path("", views.GameListView.as_view(), name="gamelist"),
     # path("league/", views.GameListView.as_view(), name="gamelist"),
     path(
-        "league/<int:league_pk>/",
+        "league/<slug:league_slug>/",
         views.GameLeagueListView.as_view(),
         name="gamelist-by-league",
     ),
-    path("edit/<int:pk>/", views.GameUpdateFoulInformation, name="update-game"),
-    path("<int:pk>/", views.GameDetailView.as_view(), name="view-game"),
+    path("edit/<uuid:pk>/", views.GameUpdateFoulInformation, name="update-game"),
+    path("<uuid:pk>/", views.GameDetailView.as_view(), name="view-game"),
 ]
