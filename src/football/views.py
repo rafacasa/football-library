@@ -3,13 +3,19 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
 from .forms import GameForm, GameFoulFormSet, GameFoulFormSetHelper
-from .models import Game, Game_Foul
+from .models import Game, Game_Foul, League
 
 
 class GameListView(ListView):
     model = Game
     context_object_name = "games"
     template_name = "football/games_list.html"
+
+
+class GameLeagueListView(GameListView):
+    def get_queryset(self):
+        self.league = get_object_or_404(League, pk=self.kwargs["league_pk"])
+        return Game.objects.filter(league=self.league)
 
 
 class GameDetailView(DetailView):
