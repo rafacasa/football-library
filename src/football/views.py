@@ -3,7 +3,13 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
 from .forms import GameForm, GameFoulFormSet, GameFoulFormSetHelper
-from .models import Game, Game_Foul, League
+from .models import Game, Game_Foul, League, Season
+
+
+class LeagueListView(ListView):
+    model = League
+    context_object_name = "leagues"
+    template_name = "football/leagues_list.html"
 
 
 class GameListView(ListView):
@@ -16,6 +22,15 @@ class GameLeagueListView(GameListView):
     def get_queryset(self):
         self.league = get_object_or_404(League, slug=self.kwargs["league_slug"])
         return Game.objects.filter(league=self.league)
+
+
+# TODO Criar o template apenas da tabela de jogos e criar um template para cada visao
+# TODO Colocar um cabeçalho para cada visao de jogos
+class GameLeagueSeasonListView(GameListView):
+    def get_queryset(self):
+        self.league = get_object_or_404(League, slug=self.kwargs["league_slug"])
+        self.season = get_object_or_404(Season, slug=self.kwargs["season_slug"])
+        return Game.objects.filter(league=self.league, season=self.season)
 
 
 class GameDetailView(DetailView):
