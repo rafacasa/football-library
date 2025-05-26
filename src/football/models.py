@@ -134,6 +134,10 @@ class Foul(models.Model):
         max_length=5,
         verbose_name=_("foul short name"),
     )
+    enabled = models.BooleanField(
+        default=False,
+        verbose_name=_("enabled"),
+    )
 
     def __str__(self):
         return self.short_name
