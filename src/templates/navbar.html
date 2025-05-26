@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom border-body mb-4" >
     <div class="container">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="{% url 'football:gamelist' %}">Navbar</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -8,9 +8,9 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="navbar-nav me-auto mb-2 mb-lg-0">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
-                <a class="nav-link" href="#">Tournaments</a>
-                <a class="nav-link" href="#">Games</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'football:gamelist' %}">Home</a>
+                <a class="nav-link" href="{% url 'football:gamelist-by-league' %}">Tournaments</a>
+                <a class="nav-link" href="{% url 'football:gamelist' %}">Games</a>
             </div>
 
             {% if user.is_authenticated %}
