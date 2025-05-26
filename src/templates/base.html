@@ -12,7 +12,9 @@
         <link href="{% static 'font/bootstrap-icons.min.css' %}" rel="stylesheet">
     </head>
     <body>
-        {% include "navbar.html" %}
+        {% block navbar %}
+            {% include "navbar.html" %}
+        {% endblock navbar %}
 
         <div class="container text-center">
             {% block content %}{% endblock content %}

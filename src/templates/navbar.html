@@ -14,15 +14,14 @@
             </div>
 
             {% if user.is_authenticated %}
-                <div class="d-flex">
-                    <span class="navbar-text me-2">Welcome, {{ user.username }}!</span>
-                </div>
-                <div class="navbar-nav">
-                    <a class="nav-link" aria-current="page" href="#">Logout</a>
-                </div>
+                <form class="d-flex" method="post" action="{% url 'accounts:logout' %}{% querystring next=request.path%}">
+                    {% csrf_token %}
+                    <span class="navbar-text me-3">Welcome, {{ user.username }}!</span>
+                    <button class="btn btn-outline-secondary" type="submit">Logout</button>
+                </form>
             {% else %}
                 <div class="d-flex">
-                    <button class="btn btn-outline-secondary" type="button">Login</button>
+                    <a class="btn btn-outline-secondary" href="{% url 'accounts:login' %}{% querystring next_page=request.path%}" role="button">Login</a>
                 </div>
             {% endif %}
         </div>
