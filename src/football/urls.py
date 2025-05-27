@@ -5,7 +5,7 @@ from . import views
 app_name = "football"
 urlpatterns = [
     path("", views.GameListView.as_view(), name="gamelist"),
-    path("league/", views.LeagueListView.as_view(), name="gamelist-by-league"),
+    path("league/", views.LeagueListView.as_view(), name="leaguelist"),
     path(
         "league/<slug:league_slug>/",
         views.GameLeagueListView.as_view(),
