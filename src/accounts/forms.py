@@ -1,11 +1,13 @@
+from crispy_bootstrap5.bootstrap5 import FloatingField
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Field, Layout, Submit
+from crispy_forms.layout import Div, Field, Layout, Submit
 from django.contrib.auth.forms import (
     AdminUserCreationForm,
     AuthenticationForm,
     UserChangeForm,
 )
 from django.forms.fields import CharField
+from django.utils.translation import gettext_lazy as _
 
 from .models import User
 
@@ -31,15 +33,12 @@ class AccountsAuthForm(AuthenticationForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_method = "POST"
-        self.helper.form_class = "form-horizontal"
-        self.helper.label_class = "col-lg-3"
-        self.helper.field_class = "col-lg-9"
         self.helper.layout = Layout(
-            "username",
-            "password",
+            FloatingField("username", wrapper_class="mb-md-4"),
+            FloatingField("password", wrapper_class="mb-md-4"),
             Field("next_page", type="hidden"),
-            Submit(
-                "login",
-                "Login",
+            Div(
+                Submit("login", _("Login"), wrapper_class=""),
+                css_class="d-grid",
             ),
         )
