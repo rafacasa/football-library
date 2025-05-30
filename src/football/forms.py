@@ -2,7 +2,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Div, Field, Layout, Row
 from django.forms import BooleanField, ModelForm, inlineformset_factory
 
-from .models import Game, Game_Foul
+from .models import Foul, Game, Game_Foul
 
 
 class GameForm(ModelForm):
@@ -33,6 +33,10 @@ class GameForm(ModelForm):
 
 class GameFoulForm(ModelForm):
     delete_btn = BooleanField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["foul"].queryset = Foul.objects.filter(enabled=True)
 
     class Meta:
         model = Game_Foul
