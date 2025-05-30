@@ -154,4 +154,4 @@ class FoulModelTeste(TestCase):
         foul_test = Foul.objects.create(
             name="False Start", short_name="FST", enabled=True
         )
-        self.assertEqual(str(foul_test), "FST")
+        self.assertEqual(str(foul_test), "FST - False Start")

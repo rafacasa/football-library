@@ -61,8 +61,8 @@ class GameFoulFormSetHelper(FormHelper):
         self.field_class = "col-lg-10"
         self.layout = Layout(
             Div(
-                Div("foul", css_class="col"),
-                Div("period", css_class="col"),
+                Div(Field("foul", css_class="select-foul"), css_class="col"),
+                Div(Field("period", css_class="select-period"), css_class="col"),
                 Div(
                     Field(
                         "delete_btn", template="football/delete_button_template.html"

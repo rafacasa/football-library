@@ -7,6 +7,16 @@ window.addEventListener('load', (event) => {
     const containerFormSet = document.getElementById('id_formset_container');
     const buttonAdd = document.getElementById('id_formset_add_button');
 
+    document.querySelectorAll('.select-foul').forEach((el)=>{
+        let settings_foul = {};
+        new TomSelect(el,settings_foul);
+    });
+
+    document.querySelectorAll('.select-period').forEach((el)=>{
+        let settings_period = {};
+        new TomSelect(el,settings_period);
+    });
+
     // event handlers
     buttonAdd.onclick = addForm;
 
@@ -29,6 +39,12 @@ window.addEventListener('load', (event) => {
         }
         containerFormSet.appendChild(formFragment);
         inputTotalForms.value = new_index + 1;
+
+        let settings_foul = {};
+        new TomSelect(document.getElementById(`id_game_foul_set-${new_index}-foul`),settings_foul);
+
+        let settings_period = {};
+        new TomSelect(document.getElementById(`id_game_foul_set-${new_index}-period`),settings_period);
     }
 
 

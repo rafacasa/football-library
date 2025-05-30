@@ -138,7 +138,7 @@ class Foul(models.Model):
     )
 
     def __str__(self):
-        return self.short_name
+        return f"{self.short_name} - {self.name}"
 
     class Meta:
         verbose_name = _("foul")
