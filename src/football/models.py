@@ -33,8 +33,7 @@ class League(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
+        self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
 
     class Meta:
@@ -53,8 +52,7 @@ class Season(models.Model):
         return self.season_name
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.season_name)
+        self.slug = slugify(self.season_name)
         return super().save(*args, **kwargs)
 
     class Meta:
