@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h3> {{ game.home_team.team_name }} vs {{ game.away_team.team_name }} </h3>
+    <ul>
+        {% for foul_game in game_fouls %}
+            <li>
+                {{ foul_game.foul.short_name }} - {{ foul_game.period }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock content %}

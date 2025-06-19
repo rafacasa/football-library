@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Game: {{ game.home_team.team_name }} vs {{ game.away_team.team_name }}{% endblock title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h3> {{ game.home_team.team_name }} vs {{ game.away_team.team_name }} </h3>
+        </div>
+    </div>
+
+    <hr>
+
+    <form method="post" class="form-horizontal">
+        {% crispy form %}
+
+        <hr>
+
+        <div id="id_formset_container">
+        {% crispy formset formset_helper%}
+        </div>
+
+        <template id="id_formset_empty_form">
+            <div class="wrapper">
+                {% crispy formset.empty_form formset_helper %}
+            </div>
+        </template>
+
+        <template id="id_formset_delete_input_template">
+            <div class="wrapper"><input type="hidden" name="game_foul_set-__prefix__-DELETE" value="on" id="id_game_foul_set-__prefix__-DELETE"></div>
+        </template>
+
+        <hr class="border border-2 border-black opacity-25">
+
+        <div class="row d-flex justify-content-between">
+            <div class="col d-flex"></div>
+            <div class="col d-flex justify-content-center">
+                <button class="btn btn-primary" type="submit"><i class="bi bi-floppy"></i>  Save</button>
+            </div>
+            <div class="col d-flex justify-content-end">
+                <button type="button" class="btn btn-outline-success" id="id_formset_add_button"><i class="bi bi-plus"></i>Add Foul</button>
+            </div>
+        </div>
+    </form>
+
+    <link rel="stylesheet" href="{% static 'css/tom-select.bootstrap5.min.css' %}">
+    <script src="{% static 'js/tom-select.complete.min.js' %}"></script>
+    <script src="{% static 'football/game_update.js' %}"></script>
+{% endblock content %}

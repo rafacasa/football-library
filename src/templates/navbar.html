@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom border-body mb-4" >
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'football:gamelist' %}">Navbar</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="navbar-nav me-auto mb-2 mb-lg-0">
+                <a class="nav-link active" aria-current="page" href="{% url 'football:gamelist' %}">Home</a>
+                <a class="nav-link" href="{% url 'football:leaguelist' %}">Leagues</a>
+                <a class="nav-link" href="{% url 'football:gamelist' %}">Games</a>
+            </div>
+
+            {% if user.is_authenticated %}
+                <form class="d-flex" method="post" action="{% url 'accounts:logout' %}{% querystring next=request.path%}">
+                    {% csrf_token %}
+                    <span class="navbar-text me-3">Welcome, {{ user.username }}!</span>
+                    <button class="btn btn-outline-secondary" type="submit">Logout</button>
+                </form>
+            {% else %}
+                <div class="d-flex">
+                    <a class="btn btn-outline-secondary" href="{% url 'accounts:login' %}{% querystring next_page=request.path%}" role="button">Login</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</nav>

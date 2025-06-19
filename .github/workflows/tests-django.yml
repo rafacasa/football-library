@@ -1,0 +1,78 @@
+name: Run Django Tests
+
+# Run the job on pushes to main and for pull requests
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  test-django:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Get python version to use from .python_version file
+      # Pyhton version is saved on python_version env variable
+      - name: Get python version
+        run: |
+          python_version=$(cat .python-version)
+          echo "python_version=${python_version}" >> $GITHUB_ENV
+      - name: Set up Python ${{ env.python_version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.python_version }}
+
+      # Caching the poetry instalation in order to prevent workflow from
+      # installing poetry everytime. Change the key value to force the reinstalation
+      - name: Load cached Poetry installation
+        id: cached-poetry
+        uses: actions/cache@v4
+        with:
+          path: ~/.local
+          key: poetry-2.1.2-0
+      - name: Install Poetry
+        if: steps.cached-poetry.outputs.cache-hit != 'true'
+        uses: snok/install-poetry@v1
+        with:
+          version: 2.1.2
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      # If using the cached instalation, the configs above are not applied
+      - name: Configure poetry
+        if: steps.cached-poetry.outputs.cache-hit == 'true'
+        run: |
+          poetry config virtualenvs.create true
+          poetry config virtualenvs.in-project true
+
+      # Caching the virtual env with all the installed dependencies
+      # The cache key will auto change if the poetry.lock file or
+      # python version changes
+      - name: cache venv
+        id: cached-venv
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: venv-${{ env.python_version }}-${{ hashFiles('**/poetry.lock') }}
+
+      # Installing dependencies. --no-root means to install the dependencies
+      # but not the project itself
+      - name: Install dependencies
+        if: steps.cached-venv.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --no-root
+
+      # Create .env file from secrets
+      - name: 'Create env file'
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envkey_DEBUG: true
+          envkey_SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          envkey_TIMEZONE: "America/Sao_Paulo"
+          envkey_LANGUAGE_CODE: "pt-BR"
+          directory: "src"
+
+      # The actual tests to run
+      - name: Run Tests
+        working-directory: ./src
+        run: poetry run python manage.py test

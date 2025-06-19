@@ -1,0 +1,24 @@
+{
+  "name": "football-library",
+  "version": "0.0.1",
+  "description": "Manage football stats",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rafacasa/football-library.git"
+  },
+  "author": "Rafael Luiz Casa",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/rafacasa/football-library/issues"
+  },
+  "homepage": "https://github.com/rafacasa/football-library#readme",
+  "dependencies": {
+    "bootstrap": "^5.3.6",
+    "bootstrap-icons": "^1.13.1",
+    "tom-select": "^2.4.3"
+  }
+}
