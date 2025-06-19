@@ -16,15 +16,16 @@
         </thead>
         <tbody>
             {% for game in games %}
-
-                <td><a href="{% url "football:update-game" game.pk %}" class="link-dark">{{ game.date|naturalday }}</a></td>
-                <td><a href="{% url "football:update-game" game.pk %}" class="link-dark">{{ game.date|date:"G:i" }}</a></td>
-                <td class="text-end"><a href="{% url "football:update-game" game.pk %}" class="link-dark">{{ game.home_team.team_name }}</a></td>
-                <td><a href="{% url "football:update-game" game.pk %}" class="link-dark">{{ game.home_team_score }}</a></td>
-                <td><a href="{% url "football:update-game" game.pk %}" class="link-dark">{{ game.away_team_score }}</a></td>
-                <td class="text-start"><a href="{% url "football:update-game" game.pk %}" class="link-dark">{{ game.away_team.team_name }}</a></td>
-                <td>{{ game.league.name }}</td>
-                <td>{{ game.season.season_name }}</td>
+                <tr>
+                    <td><a href="{% url "football:update-game" game.pk %}" class="link-dark">{{ game.date|naturalday }}</a></td>
+                    <td><a href="{% url "football:update-game" game.pk %}" class="link-dark">{{ game.date|date:"G:i" }}</a></td>
+                    <td class="text-end"><a href="{% url "football:update-game" game.pk %}" class="link-dark">{{ game.home_team.team_name }}</a></td>
+                    <td><a href="{% url "football:update-game" game.pk %}" class="link-dark">{{ game.home_team_score }}</a></td>
+                    <td><a href="{% url "football:update-game" game.pk %}" class="link-dark">{{ game.away_team_score }}</a></td>
+                    <td class="text-start"><a href="{% url "football:update-game" game.pk %}" class="link-dark">{{ game.away_team.team_name }}</a></td>
+                    <td>{{ game.league.name }}</td>
+                    <td>{{ game.season.season_name }}</td>
+                </tr>
             {% endfor %}
         </tbody>
     </table>
